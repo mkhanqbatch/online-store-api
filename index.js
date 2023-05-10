@@ -3,7 +3,7 @@ const cors = require("cors");
 // db connection
 const DBConnection = require("./db/DbConnection");
 // routes
-const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 
 // passport
@@ -15,7 +15,11 @@ app.use(cors());
 app.use(express.json());
 DBConnection();
 app.use("/auth", authRoutes);
-app.use("/users", passport.authenticate("jwt", { session: false }), userRoutes);
+app.use(
+  "/product",
+  passport.authenticate("jwt", { session: false }),
+  productRoutes
+);
 app.get("/", async (req, res) => {
   return res.json("Congrats");
 });
