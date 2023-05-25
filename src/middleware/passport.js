@@ -3,7 +3,7 @@ const passport = require("passport");
 const passportJWT = require("passport-jwt");
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
-const { Users } = require("../db/DbModels");
+const { User } = require("../models/user");
 passport.use(
   new JWTStrategy(
     {
@@ -11,7 +11,7 @@ passport.use(
       secretOrKey: process.env.TOKEN_SECRET,
     },
     function (jwtPayload, cb) {
-      return Users.findOne({ email: jwtPayload.email })
+      return User.findOne({ _id: jwtPayload.id })
         .then((user) => {
           return cb(null, user);
         })

@@ -1,25 +1,30 @@
 const express = require("express");
 const cors = require("cors");
 // db connection
-const DBConnection = require("./db/DbConnection");
+const DBConnection = require("./config/DbConnection");
 // routes
-const productRoutes = require("./routes/productRoutes");
-const authRoutes = require("./routes/authRoutes");
-
+const {
+  authRoutes,
+  productRoutes,
+  order,
+  stripe,
+} = require("./src/routes/index");
 // passport
-const passport = require("passport");
-require("./controllers/passport");
-//
+const { checkAuthentication } = require("./src/middleware/checkRoles");
+const { sendSuccessOrderMail } = require("./src/utils/emailHandler");
+require("./src/middleware/passport");
+//models
+require("./src/jobs/agenda");
+//..
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 DBConnection();
 app.use("/auth", authRoutes);
-app.use(
-  "/product",
-  passport.authenticate("jwt", { session: false }),
-  productRoutes
-);
+app.use("/products", checkAuthentication, productRoutes);
+app.use("/orders", checkAuthentication, order);
+app.use("/stripe", checkAuthentication, stripe);
 app.get("/", async (req, res) => {
   return res.json("Congrats");
 });
