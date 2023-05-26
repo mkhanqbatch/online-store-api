@@ -9,7 +9,7 @@ module.exports = function readFileData(agenda) {
     console.log("job is running");
     allProductFiles.forEach(async (productFile) => {
       //make a readable stream
-      const chunk = [];
+      let chunk = [];
       const readableStream = axios.get(productFile.Location).pipe(csvParser());
       readableStream.on("data", async (data) => {
         const document = { ...data, sellerId: productFile.sellerId };
@@ -18,22 +18,29 @@ module.exports = function readFileData(agenda) {
           // console.log("paused on chunk: ", chunkCount++);
           readableStream.pause();
           await Product.bulkWrite(chunk);
-          chunk.length = 0;
+          chunk = [];
           readableStream.resume();
+        }
+        if (readableStream.isPaused()) {
+          console.log("paused");
         }
       });
       readableStream.on("done", async (err) => {
         if (err) console.log("An error has occurred");
         else {
-          if (chunk.length > 0) {
-            await Product.bulkWrite(chunk);
+          try {
+            if (chunk?.length > 0) {
+              await Product.bulkWrite(chunk);
+            }
+            await XlsxSheet.updateOne(
+              { _id: productFile._id },
+              { productsAdded: true },
+              { new: true }
+            );
+            console.log("products added successfully.");
+          } catch (e) {
+            console.log(e.message);
           }
-          await XlsxSheet.updateOne(
-            { _id: productFile._id },
-            { productsAdded: true },
-            { new: true }
-          );
-          console.log("products added successfully.");
         }
       });
     });

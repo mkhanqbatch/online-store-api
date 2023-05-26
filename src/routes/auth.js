@@ -19,6 +19,7 @@ router.post("/signUp", async (req, res) => {
     });
   }
 });
+
 router.post("/signIn", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -28,6 +29,7 @@ router.post("/signIn", async (req, res) => {
     catchError({ res, err });
   }
 });
+
 router.post("/setSubscription", async (req, res) => {
   try {
     const { userId, subscriptionId } = req.body;
