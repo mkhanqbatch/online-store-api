@@ -1,6 +1,6 @@
-const { Order } = require("../../models/order");
+import Order from "../../models/order";
 
-const userOrders = async (userId) => {
+const UserOrders = async (userId) => {
   const orders = await Order.aggregate([
     {
       $unwind: "$products",
@@ -18,15 +18,11 @@ const userOrders = async (userId) => {
         as: "ProductInfo",
       },
     },
-    {
-      $addFields: {
-        userIdObj: { $toObjectId: "$userId" },
-      },
-    },
+
     {
       $lookup: {
         from: "users",
-        localField: "userIdObj",
+        localField: "userId",
         foreignField: "_id",
         as: "userDetails",
       },
@@ -41,7 +37,7 @@ const userOrders = async (userId) => {
         orderNumber: { $first: "$orderNumber" },
         address: { $first: "$address" },
         userName: { $first: "$userDetails.name" },
-        orderStatus: { $first: "$orderStatus" },
+        status: { $first: "$status" },
         amount: { $first: "$totalAmount" },
         products: {
           $push: {
@@ -56,4 +52,4 @@ const userOrders = async (userId) => {
 
   return orders;
 };
-module.exports = { userOrders };
+export default UserOrders;

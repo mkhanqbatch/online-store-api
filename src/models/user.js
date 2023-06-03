@@ -1,8 +1,11 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+import mongoose, { Schema } from "mongoose";
+import bcrypt from "bcrypt";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
+    _id: {
+      type: String,
+    },
     name: {
       type: String,
       required: true,
@@ -22,7 +25,7 @@ const userSchema = new mongoose.Schema(
       default: "customer",
     },
   },
-  { collection: "users", versionKey: false, strict: false, timestamps: true }
+  { timestamps: true, strict: false }
 );
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
@@ -37,5 +40,5 @@ userSchema.pre("save", async function (next) {
     return next(error);
   }
 });
-const User = mongoose.model("users", userSchema);
-module.exports = { User };
+const User = mongoose.model("User", userSchema);
+export default User;

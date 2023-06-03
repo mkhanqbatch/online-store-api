@@ -1,14 +1,12 @@
-const {
-  createSubscription,
-  cancelSubscription,
-} = require("../controllers/stripe/index");
-const express = require("express");
-const { catchError } = require("../utils/catchError");
+import { CreateSubscription } from "../controllers/stripe/index";
+import express from "express";
+import catchError from "../utils/catchError";
 const router = express.Router();
+
 router.post("/createSubscription", async (req, res) => {
   try {
     const { priceId, email, name, paymentMethod } = req.body;
-    let response = await createSubscription({
+    let response = await CreateSubscription({
       priceId,
       email,
       name,
@@ -19,4 +17,4 @@ router.post("/createSubscription", async (req, res) => {
     catchError({ res, err });
   }
 });
-module.exports = router;
+export default router;

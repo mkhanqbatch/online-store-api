@@ -1,5 +1,6 @@
-const { catchError } = require("../utils/catchError");
-const passport = require("passport");
+import catchError from "../utils/catchError";
+import passport from "passport";
+
 const checkRoles = async (req, res, next) => {
   try {
     const { role } = req.user;
@@ -19,4 +20,4 @@ const checkRoles = async (req, res, next) => {
   }
 };
 const checkAuthentication = passport.authenticate("jwt", { session: false });
-module.exports = { checkRoles, checkAuthentication };
+export { checkRoles, checkAuthentication };

@@ -1,5 +1,6 @@
-const { newOrder } = require("./newOrder");
-const { userOrders } = require("./userOrders");
-const { sellerOrders } = require("./sellerOrders");
-const { updateOrderStatus } = require("./updateOrderStatus");
-module.exports = { newOrder, userOrders, sellerOrders, updateOrderStatus };
+import NewOrder from "./new-order";
+import SellerOrders from "./seller-orders";
+import UpdateOrderStatus from "./update-order-status";
+import UserOrders from "./user-orders";
+
+export { NewOrder, SellerOrders, UpdateOrderStatus, UserOrders };

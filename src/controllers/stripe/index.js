@@ -1,2 +1,2 @@
-const { createSubscription } = require("./subscribe");
-module.exports = { createSubscription };
+import CreateSubscription from "./subscribe";
+export { CreateSubscription };

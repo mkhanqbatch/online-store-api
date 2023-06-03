@@ -1,6 +1,6 @@
-require("dotenv").config();
-const { User } = require("../models/user");
-var nodemailer = require("nodemailer");
+import User from "../models/user";
+import nodemailer from "nodemailer";
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -15,7 +15,8 @@ const attachments = [
     cid: "logo", //same cid value as in the html img src
   },
 ];
-exports.sendSuccessOrderMail = async function ({
+
+const sendSuccessOrderMail = async function ({
   userId,
   address,
   orderNumber,
@@ -83,3 +84,4 @@ Team Online store
     }
   });
 };
+export default sendSuccessOrderMail;

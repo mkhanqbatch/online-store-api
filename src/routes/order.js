@@ -1,12 +1,14 @@
-const {
-  userOrders,
-  newOrder,
-  sellerOrders,
-  updateOrderStatus,
-} = require("../controllers/orders/index");
-const express = require("express");
-const { catchError } = require("../utils/catchError");
+import {
+  NewOrder,
+  UpdateOrderStatus,
+  SellerOrders,
+  UserOrders,
+} from "../controllers/orders/index";
+import express from "express";
+import catchError from "../utils/catchError";
+
 const router = express.Router();
+
 router.post("/newOrder", async (req, res) => {
   try {
     const {
@@ -18,7 +20,7 @@ router.post("/newOrder", async (req, res) => {
       totalAmount,
       discount,
     } = req.body;
-    let response = await newOrder({
+    let response = await NewOrder({
       userId,
       products,
       address,
@@ -35,23 +37,27 @@ router.post("/newOrder", async (req, res) => {
     });
   }
 });
+
 router.get("/userOrders", async (req, res) => {
   const { userId } = req.query;
-  const orders = await userOrders(userId);
+  const orders = await UserOrders(userId);
   return res.json(orders);
 });
+
 router.get("/sellerOrders", async (req, res) => {
   const { sellerId } = req.query;
-  const orders = await sellerOrders(sellerId);
+  const orders = await SellerOrders(sellerId);
   return res.json(orders);
 });
+
 router.post("/updateOrderStatus", async (req, res) => {
-  const { orderId, orderStatus } = req.body;
+  const { orderId, status } = req.body;
+  console.log("order id ,and status ", orderId, status);
   try {
-    const order = await updateOrderStatus(orderId, orderStatus);
+    const order = await UpdateOrderStatus(orderId, status);
     return res.json(order);
   } catch (err) {
     catchError({ res, err });
   }
 });
-module.exports = router;
+export default router;

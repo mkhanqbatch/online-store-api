@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
-require("dotenv").config();
-
+import mongoose from "mongoose";
 const DBConnection = () => {
   // const url = `mongodb+srv://${process.env.dbUserName}:${process.env.dbPassword}${process.env.dbCluster}.mongodb.net/${process.env.dbName}?retryWrites=true&w=majority`;
   const url = process.env.localDb;
@@ -14,4 +12,4 @@ const DBConnection = () => {
     console.error(e);
   }
 };
-module.exports = DBConnection;
+export default DBConnection;

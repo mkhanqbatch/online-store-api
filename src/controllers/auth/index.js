@@ -1,6 +1,6 @@
-const { signIn } = require("../auth/login");
-const { signUp } = require("../auth/signup");
-const { setSubscription } = require("./setSubscription");
-const { cancelSubscription } = require("./cancelSubscription");
-const auth = { signIn, signUp, setSubscription, cancelSubscription };
-module.exports = auth;
+import CancelSubscription from "./cancel-subscription";
+import SignIn from "./login";
+import SetSubscription from "./set-subscription";
+import SignUp from "./signup";
+
+export { SignIn, SignUp, CancelSubscription, SetSubscription };

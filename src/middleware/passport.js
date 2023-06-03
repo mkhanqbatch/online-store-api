@@ -1,13 +1,10 @@
-require("dotenv").config();
-const passport = require("passport");
-const passportJWT = require("passport-jwt");
-const JWTStrategy = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJwt;
-const { User } = require("../models/user");
+import passport from "passport";
+import { Strategy as JWTstrategy, ExtractJwt } from "passport-jwt";
+import User from "../models/user";
 passport.use(
-  new JWTStrategy(
+  new JWTstrategy(
     {
-      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.TOKEN_SECRET,
     },
     function (jwtPayload, cb) {

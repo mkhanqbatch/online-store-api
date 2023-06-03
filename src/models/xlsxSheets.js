@@ -1,17 +1,20 @@
-const mongoose = require("mongoose");
-const sheetSchema = new mongoose.Schema(
+import mongoose, { Schema } from "mongoose";
+const sheetSchema = new Schema(
   {
+    _id: {
+      type: String,
+    },
     productsAdded: {
       type: Boolean,
       default: false,
     },
+    bucket: String,
+    key: String,
+    sellerId: String,
   },
   {
-    collection: "xlsxSheets",
-    versionKey: false,
-    strict: false,
     timestamps: true,
   }
 );
 const XlsxSheet = mongoose.model("XlsxSheet", sheetSchema);
-module.exports = { XlsxSheet };
+export default XlsxSheet;

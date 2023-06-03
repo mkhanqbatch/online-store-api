@@ -1,7 +1,6 @@
-const { User } = require("../../models/user");
-require("dotenv").config();
+import User from "../../models/user";
 
-const cancelSubscription = async (id) => {
+const CancelSubscription = async (id) => {
   await User.updateOne(
     {
       subscriptionId: id,
@@ -14,4 +13,4 @@ const cancelSubscription = async (id) => {
   );
   return { msg: "Subscription is cancelled." };
 };
-module.exports = { cancelSubscription };
+export default CancelSubscription;

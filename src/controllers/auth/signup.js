@@ -1,6 +1,8 @@
-const { User } = require("../../models/user");
-const jwt = require("jsonwebtoken");
-const signUp = async ({ name, email, password }) => {
+import User from "../../models/user";
+import jsonwebtoken from "jsonwebtoken";
+import { Types } from "mongoose";
+
+const SignUp = async ({ name, email, password }) => {
   //hasing password
   const oldUser = await User.findOne({ email });
   if (oldUser) {
@@ -9,9 +11,14 @@ const signUp = async ({ name, email, password }) => {
     err.statusCode = 400;
     throw err;
   }
-  const newUser = new User({ name, email, password });
+  const newUser = new User({
+    _id: new Types.ObjectId().toHexString(),
+    name,
+    email,
+    password,
+  });
   await newUser.save();
-  let token = jwt.sign(
+  let token = jsonwebtoken.sign(
     { role: newUser.role, id: newUser._id },
     process.env.TOKEN_SECRET
   );
@@ -22,4 +29,4 @@ const signUp = async ({ name, email, password }) => {
     token,
   };
 };
-module.exports = { signUp };
+export default SignUp;

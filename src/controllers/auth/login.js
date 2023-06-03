@@ -1,16 +1,14 @@
-const { User } = require("../../models/user");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const { catchError } = require("../../utils/catchError");
-require("dotenv").config();
+import User from "../../models/user";
+import jsonwebtoken from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
-const signIn = async ({ email, password }) => {
+const SignIn = async ({ email, password }) => {
   let oldUser = await User.findOne({ email });
 
   if (oldUser) {
     const passwordMatch = await bcrypt.compare(password, oldUser.password);
     if (passwordMatch) {
-      let token = jwt.sign(
+      let token = jsonwebtoken.sign(
         { role: oldUser.role, id: oldUser._id },
         process.env.TOKEN_SECRET
       );
@@ -28,4 +26,4 @@ const signIn = async ({ email, password }) => {
     throw err;
   }
 };
-module.exports = { signIn };
+export default SignIn;

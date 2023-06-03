@@ -1,6 +1,6 @@
-const { Product } = require("../../models/product");
+import Product from "../../models/product";
 
-const updateProduct = async ({
+const UpdateProduct = async ({
   _id,
   name,
   asin,
@@ -8,7 +8,6 @@ const updateProduct = async ({
   description,
   sellerId,
 }) => {
-  console.log("name and id is ", name, _id, sellerId);
   let oldProduct = await Product.findOne({ asin, _id: { $ne: _id } });
   if (oldProduct) {
     const err = new Error();
@@ -29,4 +28,4 @@ const updateProduct = async ({
     product: updatedProduct,
   };
 };
-module.exports = updateProduct;
+export default UpdateProduct;

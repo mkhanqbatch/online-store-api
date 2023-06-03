@@ -1,17 +1,34 @@
-//aws
-const AWS = require("aws-sdk");
-require("dotenv").config();
+import AWS from "aws-sdk";
+
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
   secretAccessKey: process.env.AWS_SK_KEY,
+  region: "eu-north-1",
 });
+const getSignedUrl = async (bucket, key) => {
+  const params = {
+    Bucket: bucket,
+    Key: key,
+    ACL: "private", // Set the desired ACL for the uploaded object
+    ContentType: "application/octet-stream", // Set the desired content type of the uploaded object
+  };
 
+  return new Promise((resolve, reject) => {
+    s3.getSignedUrl("putObject", params, (err, url) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(url);
+      }
+    });
+  });
+};
 const uploadFile = (file, key) => {
   return new Promise((resolve, reject) => {
     try {
-      const BUCKET = "qbatch";
+      const BUCKET = "myqbatchx";
       const uploadParams = {
-        Bucket: BUCKET + "/images",
+        Bucket: BUCKET,
         Key: key,
         Body: file.buffer,
         ContentType: file.mimetype,
@@ -34,7 +51,7 @@ const deleteFile = (filePath) => {
   return new Promise((resolve, reject) => {
     try {
       var params = {
-        Bucket: "qbatch",
+        Bucket: "qbatchfile",
         Key: filePath,
       };
 
@@ -48,4 +65,4 @@ const deleteFile = (filePath) => {
   });
 };
 
-module.exports = { uploadFile, deleteFile };
+export { uploadFile, deleteFile, getSignedUrl, s3 };

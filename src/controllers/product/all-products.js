@@ -1,9 +1,8 @@
-const { Product } = require("../../models/product");
+import Product from "../../models/product";
 
-const allProducts = async (sellerId = 0) => {
+const AllProducts = async (sellerId = 0) => {
   let products = [];
   if (sellerId) {
-    console.log("hello", sellerId);
     products = await Product.find({ sellerId });
     return {
       status: true,
@@ -18,4 +17,4 @@ const allProducts = async (sellerId = 0) => {
     products,
   };
 };
-module.exports = allProducts;
+export default AllProducts;

@@ -20,4 +20,4 @@ const catchError = ({ res, err }) => {
   });
 };
 
-module.exports = { catchError };
+export default catchError;

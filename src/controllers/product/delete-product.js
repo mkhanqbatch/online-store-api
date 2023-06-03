@@ -1,6 +1,6 @@
-const { Product } = require("../../models/product");
+import Product from "../../models/product";
 
-const deleteProduct = async (id, sellerId) => {
+const DeleteProduct = async (id, sellerId) => {
   let oldProduct = await Product.findOne({ _id: id, sellerId });
   if (oldProduct) {
     try {
@@ -14,4 +14,4 @@ const deleteProduct = async (id, sellerId) => {
     }
   }
 };
-module.exports = deleteProduct;
+export default DeleteProduct;

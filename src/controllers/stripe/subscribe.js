@@ -1,7 +1,7 @@
-require("dotenv").config();
-const stripe = require("stripe")(process.env.STRIPE_SECRET);
+import Stripe from "stripe";
+const stripe = new Stripe(process.env.STRIPE_SECRET);
 
-const createSubscription = async ({ priceId, email, name, paymentMethod }) => {
+const CreateSubscription = async ({ priceId, email, name, paymentMethod }) => {
   // create a stripe customer or retrieve old one
   const customer = await findOrCreateCustomer(email, name, paymentMethod);
 
@@ -43,4 +43,4 @@ async function findOrCreateCustomer(email, name, paymentMethod) {
     return newCustomer;
   }
 }
-module.exports = { createSubscription };
+export default CreateSubscription;
